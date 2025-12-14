@@ -28,7 +28,7 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         "numpy>=1.19.0",
-        "scikit-learn>=0.24.0",
+        "scikit-learn>=1.0.2",
     ],
     extras_require={
         "dev": [
