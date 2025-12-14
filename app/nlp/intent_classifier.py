@@ -25,7 +25,12 @@ class IntentClassifier:
             model_name: HuggingFace model name or path
         """
         self.model_name = model_name or settings.intent_model
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        
+        # Set device only if torch is available
+        if TORCH_AVAILABLE:
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        else:
+            self.device = None
         
         # Default intents for demo purposes
         self.intent_labels = [
