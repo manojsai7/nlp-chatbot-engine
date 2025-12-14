@@ -108,8 +108,10 @@ class EntityExtractor:
             custom_entities = extractor(text)
             for entity in custom_entities:
                 if isinstance(entity, dict):
-                    entity["type"] = entity_type
-                    entities.append(entity)
+                    # Create a copy to avoid mutating input
+                    entity_copy = dict(entity)
+                    entity_copy["type"] = entity_type
+                    entities.append(entity_copy)
                 else:
                     entities.append({
                         "type": entity_type,

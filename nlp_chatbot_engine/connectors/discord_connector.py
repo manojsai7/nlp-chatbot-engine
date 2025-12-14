@@ -97,9 +97,12 @@ class DiscordConnector(BaseConnector):
             channel_id = message_obj.get("channel_id")
         else:
             # Template for actual discord.Message object
-            user_id = str(getattr(message_obj, "author", {}).get("id", "unknown"))
+            author = getattr(message_obj, "author", None)
+            channel = getattr(message_obj, "channel", None)
+            
+            user_id = str(author.id) if author and hasattr(author, 'id') else "unknown"
             message = getattr(message_obj, "content", "")
-            channel_id = str(getattr(message_obj, "channel", {}).get("id", "unknown"))
+            channel_id = str(channel.id) if channel and hasattr(channel, 'id') else "unknown"
         
         message_data = {
             "user_id": user_id,

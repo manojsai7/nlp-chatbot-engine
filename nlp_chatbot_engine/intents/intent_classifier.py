@@ -105,8 +105,6 @@ class IntentClassifier:
             for keyword in keywords:
                 if keyword.lower() in text_lower:
                     scores[intent] += 1.0
-                if keyword.lower() in words:
-                    scores[intent] += 0.5
         
         # Context-based boosting
         if context and "last_intent" in context:
