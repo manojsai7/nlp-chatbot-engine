@@ -1,7 +1,7 @@
 """Safety filter middleware for content moderation"""
 import logging
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +66,7 @@ class SafetyFilter:
         
         return True
     
-    def filter_content(self, text: str) -> Dict[str, any]:
+    def filter_content(self, text: str) -> Dict[str, Any]:
         """Filter and analyze content
         
         Args:
