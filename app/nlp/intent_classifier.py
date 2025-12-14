@@ -1,8 +1,14 @@
 """Intent classification module using transformer models"""
-import torch
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from typing import Dict, List, Tuple
 import logging
+from typing import Dict, List, Tuple
+
+try:
+    import torch
+    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    torch = None
 
 from app.core.config import settings
 
@@ -42,6 +48,11 @@ class IntentClassifier:
     def initialize(self):
         """Lazy initialization of model"""
         if self._is_initialized:
+            return
+        
+        if not TORCH_AVAILABLE:
+            logger.warning("PyTorch/Transformers not available. Using rule-based fallback only.")
+            self._is_initialized = False
             return
             
         try:

@@ -1,7 +1,13 @@
 """Entity extraction module using spaCy"""
-import spacy
-from typing import List, Dict, Any
 import logging
+from typing import List, Dict, Any
+
+try:
+    import spacy
+    SPACY_AVAILABLE = True
+except ImportError:
+    SPACY_AVAILABLE = False
+    spacy = None
 
 from app.core.config import settings
 from app.core.models import Entity
@@ -25,6 +31,11 @@ class EntityExtractor:
     def initialize(self):
         """Lazy initialization of spaCy model"""
         if self._is_initialized:
+            return
+        
+        if not SPACY_AVAILABLE:
+            logger.warning("spaCy not available. Using rule-based fallback only.")
+            self._is_initialized = False
             return
             
         try:
