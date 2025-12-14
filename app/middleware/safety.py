@@ -54,14 +54,14 @@ class SafetyFilter:
         # Check blocked patterns
         for pattern in self.blocked_patterns:
             if pattern.search(text):
-                logger.warning(f"Blocked pattern detected in text")
+                logger.warning(f"Blocked pattern detected in content")
                 return False
         
         # Check toxic keywords (simple check)
         text_lower = text.lower()
         for keyword in self.toxic_keywords:
             if keyword in text_lower:
-                logger.warning(f"Toxic keyword detected: {keyword}")
+                logger.warning(f"Toxic content detected (keyword match)")
                 return False
         
         return True

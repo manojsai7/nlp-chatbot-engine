@@ -2,6 +2,7 @@
 import os
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import secrets
 
 
 class Settings(BaseSettings):
@@ -16,6 +17,9 @@ class Settings(BaseSettings):
     
     # API settings
     api_prefix: str = "/api/v1"
+    
+    # CORS settings
+    cors_origins: str = "*"  # Comma-separated list of allowed origins
     
     # NLP settings
     intent_model: str = "distilbert-base-uncased"
@@ -48,7 +52,13 @@ class Settings(BaseSettings):
     
     # Security
     safety_filter_enabled: bool = True
-    secret_key: str = "your-secret-key-here-change-in-production"
+    secret_key: str = ""
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Generate a secure secret key if not provided
+        if not self.secret_key:
+            self.secret_key = secrets.token_urlsafe(32)
     
     # Slack adapter
     slack_bot_token: Optional[str] = None
@@ -62,6 +72,13 @@ class Settings(BaseSettings):
     twilio_account_sid: Optional[str] = None
     twilio_auth_token: Optional[str] = None
     twilio_whatsapp_number: Optional[str] = None
+    
+    @property
+    def cors_origins_list(self) -> list:
+        """Parse CORS origins into a list"""
+        if self.cors_origins == "*":
+            return ["*"]
+        return [origin.strip() for origin in self.cors_origins.split(",")]
 
 
 settings = Settings()
