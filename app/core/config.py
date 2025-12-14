@@ -1,11 +1,13 @@
 # Configuration settings for the NLP Chatbot Engine
 import os
 from typing import Optional
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application settings and configuration"""
+    
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
     
     # App settings
     app_name: str = "NLP Chatbot Engine"
@@ -60,10 +62,6 @@ class Settings(BaseSettings):
     twilio_account_sid: Optional[str] = None
     twilio_auth_token: Optional[str] = None
     twilio_whatsapp_number: Optional[str] = None
-    
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
 
 
 settings = Settings()
